@@ -39,6 +39,11 @@ export default {
 
 #app {
   font-family: sans-serif;
+
+  .z-index-2 {
+    position: relative;
+    z-index: 2;
+  }
 }
 
 </style>

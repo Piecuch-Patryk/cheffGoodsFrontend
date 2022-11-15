@@ -34,5 +34,6 @@ export default {
   left: 0;
   right: 0;
   padding: 0 2rem;
+  z-index: 100;
 }
 </style>
