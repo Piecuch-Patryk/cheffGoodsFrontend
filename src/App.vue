@@ -1,6 +1,6 @@
 <template>
   <TopBar :categories="categories" />
-  <router-view/>
+  <router-view :categories="categories"></router-view>
 </template>
 
 <script>
