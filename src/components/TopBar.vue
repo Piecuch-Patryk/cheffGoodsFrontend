@@ -2,7 +2,7 @@
   <div class="top-bar">
     <Logo />
     <Socials />
-    <Navigation />
+    <Navigation :categories="categories" />
   </div>
 </template>
 
@@ -17,6 +17,9 @@ export default {
     Logo,
     Socials,
     Navigation,
+  },
+  props: {
+    categories: Object,
   }
 }
 </script>
@@ -28,7 +31,8 @@ export default {
   align-items: center;
   position: fixed;
   top: 5rem;
-  left: 2rem;
-  right: 2rem;
+  left: 0;
+  right: 0;
+  padding: 0 2rem;
 }
 </style>

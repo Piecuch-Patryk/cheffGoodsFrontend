@@ -23,6 +23,7 @@ ul {
   list-style: none;
   display: flex;
   align-items: center;
+  margin-left: -.3rem;
 
   img {
     width: 1rem;
