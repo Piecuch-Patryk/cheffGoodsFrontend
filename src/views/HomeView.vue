@@ -1,11 +1,13 @@
 <template>
   <HomeHeader />
   <CategoriesSection :categories="categories" />
+  <Carousel />
 </template>
 
 <script>
 import HomeHeader from '@/components/HomeHeader.vue'
 import CategoriesSection from '@/components/CategoriesSection.vue'
+import Carousel from '@/components/Carousel.vue'
 
 export default {
   name: 'HomeView',
@@ -15,6 +17,7 @@ export default {
   components: {
     HomeHeader,
     CategoriesSection,
+    Carousel,
   }
 }
 </script>
