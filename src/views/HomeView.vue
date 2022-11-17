@@ -13,6 +13,7 @@
   <main>
     <TopDishes />
   </main>
+  <Reviews />
 </template>
 
 <script>
@@ -21,6 +22,7 @@ import CategoriesSection from '@/components/CategoriesSection.vue'
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination } from 'vue3-carousel'
 import TopDishes from '@/components/TopDishes.vue'
+import Reviews from '@/components/Reviews.vue'
 
 export default {
   name: 'HomeView',
@@ -34,6 +36,7 @@ export default {
     Slide,
     Pagination,
     TopDishes,
+    Reviews,
   }
 }
 </script>
