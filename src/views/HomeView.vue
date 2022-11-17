@@ -10,6 +10,9 @@
       <pagination />
     </template>
   </carousel>
+  <main>
+    <TopDishes />
+  </main>
 </template>
 
 <script>
@@ -17,6 +20,7 @@ import HomeHeader from '@/components/HomeHeader.vue'
 import CategoriesSection from '@/components/CategoriesSection.vue'
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination } from 'vue3-carousel'
+import TopDishes from '@/components/TopDishes.vue'
 
 export default {
   name: 'HomeView',
@@ -29,6 +33,7 @@ export default {
     Carousel,
     Slide,
     Pagination,
+    TopDishes,
   }
 }
 </script>

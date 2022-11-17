@@ -9,6 +9,7 @@ import axios from 'axios'
 
 export default {
   name: 'App',
+  inject: ['APIurl'],
   data() {
     return {
       categories: null,
@@ -17,14 +18,19 @@ export default {
   components: {
     TopBar,
   },
-  mounted() {
-    axios.get(`http://127.0.0.1:8000/api/categories`)
+  methods: {
+    getCategories: async function() {
+      await axios.get(`${this.APIurl}/api/categories`)
       .then((response) => {
         this.categories = response.data
       })
       .catch((error) => {
         console.log(error);
       })
+    },
+  },
+  mounted() {
+      this.getCategories()
     }
   }
 
