@@ -5,6 +5,16 @@
     <div v-show="formVisible">
       <form>
         <div class="form-row">
+          <star-rating
+            v-model:rating="rating"
+            :show-rating="false"
+            :round-start-rating="false"
+            :star-size="35"
+            :animate="true"
+            :increment="0.01"
+          ></star-rating>
+        </div>
+        <div class="form-row">
           <label for="name">Name</label>
           <span v-if="v$.name.required.$invalid">Please provide a name.</span>
           <span v-if="v$.name.maxLength.$invalid">Only {{ v$.name.maxLength.$params.max }} characters allowed.</span>
@@ -36,7 +46,14 @@
           <div>
             <h4>{{ review.name }}</h4>
             <h5>{{ formatDate(review.created_at) }}</h5>
-            <span class="rating">Rating: {{ review.rating }}</span>
+              <star-rating
+                :rating="parseFloat(review.rating)"
+                :show-rating="false"
+                :round-start-rating="false"
+                :star-size="20"
+                :increment="0.01"
+                :read-only="true"
+              ></star-rating>
             <p>{{ review.content }}</p>
           </div>
         </li>
@@ -44,7 +61,14 @@
           <div>
             <h4>{{ review.name }}</h4>
             <h5>{{ formatDate(review.created_at) }}</h5>
-            <span class="rating">Rating: {{ review.rating }}</span>
+            <star-rating
+                :rating="parseFloat(review.rating)"
+                :show-rating="false"
+                :round-start-rating="false"
+                :star-size="20"
+                :increment="0.01"
+                :read-only="true"
+              ></star-rating>
             <p>{{ review.content }}</p>
           </div>
         </li>
@@ -59,7 +83,8 @@
 <script>
 import axios from 'axios'
 import useValidate from '@vuelidate/core'
-import { required, email, maxLength, } from '@vuelidate/validators'
+import { required, email, maxLength, between } from '@vuelidate/validators'
+import StarRating from 'vue-star-rating'
 
 export default {
   name: 'Reviews',
@@ -71,7 +96,7 @@ export default {
       name: '',
       email: '',
       content: '',
-      rating: '',
+      rating: 4.5,
       sending: false,
       reviews: null,
       moreReviews: null,
@@ -83,6 +108,9 @@ export default {
       },
       success: false,
     }
+  },
+  components: {
+    StarRating,
   },
   methods: {
     getReviews: async function() {
@@ -108,7 +136,7 @@ export default {
           name: this.name,
           email: this.email,
           content: this.content,
-          rating: 4,
+          rating: this.rating,
         })
         .then(response => {
           this.name = ''
@@ -150,6 +178,10 @@ export default {
         maxLength: maxLength(500),
         $lazy: true,
       },
+      rating: {
+        required,
+        between: between(0, 5),
+      }
     }
   },
   mounted() {
@@ -187,6 +219,10 @@ section {
       padding: .5rem;
       display: flex;
       flex-direction: column;
+
+      .vue-star-rating {
+        margin: auto;
+      }
 
       input, textarea {
         padding: .2rem;
