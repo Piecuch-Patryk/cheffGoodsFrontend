@@ -111,6 +111,10 @@ export default {
           rating: 4,
         })
         .then(response => {
+          this.name = ''
+          this.email = ''
+          this.content = ''
+          this.rating = 4.5
           this.success = true
           this.info = true
           this.getReviews()
