@@ -6,18 +6,27 @@
       <form>
         <div class="form-row">
           <label for="name">Name</label>
-          <input v-model.lazy="name" id="name" type="text">
+          <span v-if="v$.name.required.$invalid">Please provide a name.</span>
+          <span v-if="v$.name.maxLength.$invalid">Only {{ v$.name.maxLength.$params.max }} characters allowed.</span>
+          <input v-model="name" id="name" type="text">
         </div>
         <div class="form-row">
           <label for="email">Email</label>
-          <input v-model.lazy="email" id="email" type="email">
+          <span v-if="v$.email.required.$invalid">Please provide email address.</span>
+          <span v-if="v$.email.email.$invalid">Please provide valid email address.</span>
+          <input v-model="email" id="email" type="email">
         </div>
         <div class="form-row">
           <label for="Content">Content</label>
-          <textarea v-model.lazy="content" id="content"></textarea>
+          <span v-if="v$.content.required.$invalid">Share your opinion with others.</span>
+          <span v-if="v$.content.maxLength.$invalid">Only {{ v$.content.maxLength.$params.max }} characters allowed.</span>
+          <textarea v-model="content" id="content"></textarea>
         </div>
         <div class="btn-wrapper">
-          <button class="btn" @click="validateForm">Submit</button>
+          <button class="btn" @click="submitForm">Submit</button>
+        </div>
+        <div v-show="info" :class="[success ? 'success' : 'failure', 'info']" v-if="success ? msg = infoMsg.success : msg = infoMsg.failure">
+          <p>{{ msg }}</p>
         </div>
       </form>
     </div>
@@ -49,6 +58,8 @@
 
 <script>
 import axios from 'axios'
+import useValidate from '@vuelidate/core'
+import { required, email, maxLength, } from '@vuelidate/validators'
 
 export default {
   name: 'Reviews',
@@ -56,6 +67,7 @@ export default {
   data() {
     return {
       formVisible: false,
+      v$: useValidate(),
       name: '',
       email: '',
       content: '',
@@ -64,6 +76,12 @@ export default {
       reviews: null,
       moreReviews: null,
       showAllReviews: false,
+      info: false,
+      infoMsg: {
+        success: 'Thanks for your opinion!',
+        failure: 'Ups, something went wrong. Please try again later.',
+      },
+      success: false,
     }
   },
   methods: {
@@ -81,6 +99,51 @@ export default {
     formatDate(date) {
       const created = date.split('T')
       return created[0].split('-').join('/')
+    },
+    submitForm(e) {
+      e.preventDefault()
+      this.v$.$validate()
+      if (!this.v$.$error) {
+        axios.post(`${this.APIurl}/api/review`, {
+          name: this.name,
+          email: this.email,
+          content: this.content,
+          rating: 4,
+        })
+        .then(response => {
+          this.success = true
+          this.info = true
+          setTimeout(() => {
+            this.info = false
+          }, 2000)
+        })
+        .catch(error => {
+          this.success = false
+          this.info = true
+          setTimeout(() => {
+            this.info = false
+          }, 2000)
+        });
+      }
+    },
+  },
+  validations() {
+    return {
+      name: {
+        required,
+        maxLength: maxLength(50),
+        $lazy: true,
+      },
+      email: {
+        required,
+        email,
+        $lazy: true,
+      },
+      content: {
+        required,
+        maxLength: maxLength(500),
+        $lazy: true,
+      },
     }
   },
   mounted() {
@@ -112,6 +175,7 @@ section {
   form {
     text-align: left;
     width: 100%;
+    position: relative;
 
     .form-row {
       padding: .5rem;
@@ -125,6 +189,30 @@ section {
       textarea {
         height: 100px;
         font-family: inherit;
+      }
+
+      span {
+        font-size: .8rem;
+        color: red;
+      }
+    }
+
+    .info {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255,255,255,1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &.success {
+        color: green;
+      }
+      &.failure {
+        color: red;
       }
     }
 
