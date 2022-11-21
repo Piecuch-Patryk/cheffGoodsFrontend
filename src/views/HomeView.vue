@@ -14,6 +14,7 @@
     <TopDishes />
   </main>
   <Reviews />
+  <Newsletter />
 </template>
 
 <script>
@@ -23,6 +24,7 @@ import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination } from 'vue3-carousel'
 import TopDishes from '@/components/TopDishes.vue'
 import Reviews from '@/components/Reviews.vue'
+import Newsletter from '@/components/Newsletter.vue'
 
 export default {
   name: 'HomeView',
@@ -37,6 +39,7 @@ export default {
     Pagination,
     TopDishes,
     Reviews,
+    Newsletter,
   }
 }
 </script>
