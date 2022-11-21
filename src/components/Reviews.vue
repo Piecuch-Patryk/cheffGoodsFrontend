@@ -113,7 +113,9 @@ export default {
         .then(response => {
           this.success = true
           this.info = true
+          this.getReviews()
           setTimeout(() => {
+            this.formVisible = false
             this.info = false
           }, 2000)
         })
